@@ -63,25 +63,25 @@ The project also investigates how the number of retrieved evidence sentences aff
              ┌──────────────┴──────────────┐
              │                             │
              ▼                             ▼
-          BM25                         MiniLM
-       lexical search              semantic search
+          BM25                           MiniLM
+      lexical search                semantic search
              │                             │
              └──────────────┬──────────────┘
                             ▼
-                  Reciprocal Rank Fusion
+                   Reciprocal Rank Fusion
                             │
                             ▼
                     Top evidence sentence
                             │
                             ▼
-                  DeBERTa-v3 NLI model
+                    DeBERTa-v3 NLI model
                             │
-             ┌──────────────┼──────────────┐
-             ▼              ▼              ▼
-         Entailment    Contradiction    Neutral
-             │              │              │
-             ▼              ▼              ▼
-        SUPPORTED       CONTRADICTED     UNKNOWN
+                 ┌──────────┼──────────┐
+                 ▼          ▼          ▼
+             Entailment  Contradiction Neutral
+                 │          │          │
+                 ▼          ▼          ▼
+             SUPPORTED  CONTRADICTED  UNKNOWN
 ```
 
 ---
@@ -125,26 +125,31 @@ The system uses:
 The NLI labels are mapped as:
 
 ```text
-entailment    → SUPPORTED
-contradiction → CONTRADICTED
-neutral       → UNKNOWN
+entailment    -> SUPPORTED
+contradiction -> CONTRADICTED
+neutral       -> UNKNOWN
 ```
 
 A confidence threshold and decision-margin threshold are used to avoid forcing uncertain cases into supported or contradicted classes.
 
 ---
 
-## 5. Dataset
+## 5. Datasets
 
 ### FEVER
 
-The primary benchmark is the FEVER fact verification dataset.
+The primary benchmark is the **FEVER (Fact Extraction and VERification)** dataset.
+
+Official sources:
+
+* FEVER dataset and documentation: https://fever.ai/
+* Official FEVER repository: https://github.com/awslabs/fever
 
 The project uses:
 
-* FEVER training data
-* FEVER development data
-* FEVER Wikipedia evidence pages
+* FEVER training data (`train.jsonl`)
+* FEVER development data (`shared_task_dev.jsonl`)
+* FEVER Wikipedia evidence pages (`wiki-pages.zip`)
 
 The development set contains claims labelled:
 
@@ -154,33 +159,43 @@ REFUTES
 NOT ENOUGH INFO
 ```
 
-These are mapped to:
+For the project pipeline, these are mapped to:
 
 ```text
-SUPPORTS         → SUPPORTED
-REFUTES          → CONTRADICTED
-NOT ENOUGH INFO  → UNKNOWN
+SUPPORTS          -> SUPPORTED
+REFUTES           -> CONTRADICTED
+NOT ENOUGH INFO   -> UNKNOWN
 ```
 
-The Wikipedia-derived development evidence corpus used during experiments contains:
+The experiments use a development-scale evidence corpus constructed from the Wikipedia pages referenced by the FEVER development evidence.
+
+The resulting evidence corpus contains:
 
 **27,055 sentences**
 
-The complete Wikipedia corpus is much larger and is not loaded into RAM during development.
+The complete FEVER Wikipedia corpus is much larger and is therefore not loaded into RAM during development experiments.
+
+The raw FEVER files and generated evidence/index files are intentionally excluded from GitHub because of their size. They can be reconstructed locally using the scripts in `src/`.
 
 ### HaluEval
 
-HaluEval is used as a secondary external benchmark.
+HaluEval is used as a secondary external benchmark for testing transfer beyond FEVER-style claim verification.
 
-The current experiment evaluates the zero-shot NLI formulation on a 1,000-example subset of its QA data.
+Official source:
 
-This experiment showed limited transfer of the FEVER-oriented NLI formulation to HaluEval QA, motivating further work on QA-specific evidence retrieval and verification.
+* HaluEval repository: https://github.com/RUCAIBox/HaluEval
+
+The current experiment evaluates the zero-shot NLI formulation on a **1,000-example subset** of the HaluEval QA data.
+
+This experiment showed limited transfer of the FEVER-oriented NLI formulation to the QA setting. This is treated as a documented limitation rather than evidence that the complete hallucination-detection pipeline fails on HaluEval.
+
+Future work includes QA-specific claim extraction, evidence retrieval, and verification.
 
 ---
 
 ## 6. Retrieval Results
 
-The retrieval experiments were performed on 19,998 FEVER development examples using a restricted development evidence corpus.
+The retrieval experiments were performed on **19,998 FEVER development examples** using a restricted development evidence corpus.
 
 ### Page-level retrieval
 
@@ -231,7 +246,7 @@ Therefore, the frozen final architecture uses the **top-ranked evidence sentence
 
 ## 8. Held-Out Evaluation
 
-After architecture selection on the first 1,000 FEVER development examples, a separate 2,000-example subset was used as a held-out evaluation.
+After architecture selection on the first 1,000 FEVER development examples, a separate **2,000-example subset** was used as a held-out evaluation.
 
 The architecture was frozen before this evaluation.
 
@@ -257,6 +272,7 @@ Confusion matrix:
 
 ```text
                  Predicted
+
                S      C      U
 
 Actual S      393     58    229
@@ -300,9 +316,11 @@ A 1,000-example subset of HaluEval QA data was evaluated using a question-aware 
 
 ```text
 Premise:
+
 Knowledge + Question
 
 Hypothesis:
+
 Candidate answer
 ```
 
@@ -386,19 +404,19 @@ requirements-lock.txt
 
 ```text
 Claim-Level-Hallucination-Detection/
-│
+
 ├── app/
 │   └── app.py
-│
+
 ├── data/
 │   ├── raw/
 │   └── processed/
-│
+
 ├── evaluation/
 │   └── results/
-│
+
 ├── notebooks/
-│
+
 ├── src/
 │   ├── config.py
 │   ├── dataset_loader.py
@@ -412,11 +430,11 @@ Claim-Level-Hallucination-Detection/
 │   ├── claim_verifier.py
 │   ├── pipeline.py
 │   └── ...
-│
+
 ├── tests/
 │   ├── test_pipeline.py
 │   └── test_integration.py
-│
+
 ├── requirements.txt
 ├── requirements-lock.txt
 ├── .gitignore
@@ -441,7 +459,7 @@ Current status:
 13 tests passed
 ```
 
-The integration tests verify the complete retrieval → NLI → decision pipeline.
+The integration tests verify the complete retrieval -> NLI -> decision pipeline.
 
 ---
 
@@ -467,6 +485,7 @@ Statements such as:
 
 ```text
 Paris is the capital of France.
+
 It is located in Europe.
 ```
 
@@ -531,14 +550,41 @@ Potential extensions include:
 
 ## 18. References
 
-* FEVER: Fact Extraction and VERification.
-* HaluEval: A Large-Scale Hallucination Evaluation Benchmark for Large Language Models.
-* `sentence-transformers/all-MiniLM-L6-v2`
-* `cross-encoder/nli-deberta-v3-base`
-* FAISS: Facebook AI Similarity Search.
-* BM25 information retrieval.
+### Datasets
 
-Dataset and model links should be added here before publication.
+* FEVER: Fact Extraction and VERification
+  https://fever.ai/
+
+* FEVER official repository
+  https://github.com/awslabs/fever
+
+* HaluEval: A Large-Scale Hallucination Evaluation Benchmark for Large Language Models
+  https://github.com/RUCAIBox/HaluEval
+
+### Models
+
+* `sentence-transformers/all-MiniLM-L6-v2`
+  https://huggingface.co/sentence-transformers/all-MiniLM-L6-v2
+
+* `cross-encoder/nli-deberta-v3-base`
+  https://huggingface.co/cross-encoder/nli-deberta-v3-base
+
+### Tools and Methods
+
+* FAISS: Facebook AI Similarity Search
+  https://github.com/facebookresearch/faiss
+
+* BM25 information retrieval
+  https://en.wikipedia.org/wiki/Okapi_BM25
+
+* Sentence Transformers
+  https://www.sbert.net/
+
+* Hugging Face Transformers
+  https://huggingface.co/docs/transformers/
+
+* Gradio
+  https://www.gradio.app/
 
 ---
 
