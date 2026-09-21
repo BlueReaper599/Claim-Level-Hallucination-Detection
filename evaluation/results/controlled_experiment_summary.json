@@ -1,0 +1,110 @@
+[
+  {
+    "system": "BM25 + NLI + V2",
+    "accuracy": 0.474,
+    "macro_precision": 0.5641238567353941,
+    "macro_recall": 0.47199257770334957,
+    "macro_f1": 0.44816164493376,
+    "weighted_precision": 0.5640981307821035,
+    "weighted_recall": 0.474,
+    "weighted_f1": 0.4495374898742665,
+    "confusion_matrix": [
+      [
+        65,
+        60,
+        206
+      ],
+      [
+        3,
+        246,
+        90
+      ],
+      [
+        13,
+        154,
+        163
+      ]
+    ]
+  },
+  {
+    "system": "SEMANTIC + NLI + V2",
+    "accuracy": 0.493,
+    "macro_precision": 0.584724700223621,
+    "macro_recall": 0.491734147614692,
+    "macro_f1": 0.48273210051777776,
+    "weighted_precision": 0.5848181058975496,
+    "weighted_recall": 0.49299999999999994,
+    "weighted_f1": 0.4837940569201199,
+    "confusion_matrix": [
+      [
+        87,
+        34,
+        210
+      ],
+      [
+        7,
+        223,
+        109
+      ],
+      [
+        12,
+        135,
+        183
+      ]
+    ]
+  },
+  {
+    "system": "HYBRID + NLI + V2",
+    "accuracy": 0.507,
+    "macro_precision": 0.5987280921388537,
+    "macro_recall": 0.5057682943922015,
+    "macro_f1": 0.49599121358822346,
+    "weighted_precision": 0.5989806640776822,
+    "weighted_recall": 0.507,
+    "weighted_f1": 0.49713617469934024,
+    "confusion_matrix": [
+      [
+        87,
+        26,
+        218
+      ],
+      [
+        6,
+        227,
+        106
+      ],
+      [
+        13,
+        124,
+        193
+      ]
+    ]
+  },
+  {
+    "system": "HYBRID + NLI + V1",
+    "accuracy": 0.474,
+    "macro_precision": 0.3844054580896686,
+    "macro_recall": 0.4694275860225116,
+    "macro_f1": 0.37363375312589264,
+    "weighted_precision": 0.38500350877192985,
+    "weighted_recall": 0.474,
+    "weighted_f1": 0.37565539257202707,
+    "confusion_matrix": [
+      [
+        141,
+        190,
+        0
+      ],
+      [
+        6,
+        333,
+        0
+      ],
+      [
+        43,
+        287,
+        0
+      ]
+    ]
+  }
+]

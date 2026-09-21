@@ -1,0 +1,93 @@
+{
+  "experiment": "final_heldout_evaluation",
+  "dataset": {
+    "file": "C:\\Users\\krish\\Claim-Level-Hallucination-Detection\\data\\raw\\shared_task_dev.jsonl",
+    "total_records_available": 19998,
+    "development_ablation_range": [
+      0,
+      999
+    ],
+    "heldout_range": [
+      1000,
+      2999
+    ],
+    "heldout_size": 2000
+  },
+  "architecture": {
+    "retrieval": "BM25 + MiniLM semantic retrieval with Reciprocal Rank Fusion",
+    "evidence_selection": "Top-1 retrieved sentence",
+    "nli_model": "cross-encoder/nli-deberta-v3-base",
+    "decision_threshold": 0.5,
+    "decision_margin": 0.1
+  },
+  "metrics": {
+    "accuracy": 0.6225,
+    "macro_precision": 0.6439592369733248,
+    "macro_recall": 0.6218177723859687,
+    "macro_f1": 0.6231299633207042,
+    "weighted_precision": 0.6464418534320135,
+    "weighted_recall": 0.6225,
+    "weighted_f1": 0.6245671875803,
+    "classification_report": {
+      "SUPPORTED": {
+        "precision": 0.8238993710691824,
+        "recall": 0.5779411764705882,
+        "f1-score": 0.6793431287813311,
+        "support": 680.0
+      },
+      "CONTRADICTED": {
+        "precision": 0.6299019607843137,
+        "recall": 0.7683109118086696,
+        "f1-score": 0.6922558922558922,
+        "support": 669.0
+      },
+      "UNKNOWN": {
+        "precision": 0.4780763790664781,
+        "recall": 0.5192012288786483,
+        "f1-score": 0.49779086892488955,
+        "support": 651.0
+      },
+      "accuracy": 0.6225,
+      "macro avg": {
+        "precision": 0.6439592369733248,
+        "recall": 0.6218177723859687,
+        "f1-score": 0.6231299633207042,
+        "support": 2000.0
+      },
+      "weighted avg": {
+        "precision": 0.6464418534320135,
+        "recall": 0.6225,
+        "f1-score": 0.6245671875803,
+        "support": 2000.0
+      }
+    },
+    "confusion_matrix": [
+      [
+        393,
+        58,
+        229
+      ],
+      [
+        15,
+        514,
+        140
+      ],
+      [
+        69,
+        244,
+        338
+      ]
+    ],
+    "classification_report_text": "              precision    recall  f1-score   support\n\n   SUPPORTED       0.82      0.58      0.68       680\nCONTRADICTED       0.63      0.77      0.69       669\n     UNKNOWN       0.48      0.52      0.50       651\n\n    accuracy                           0.62      2000\n   macro avg       0.64      0.62      0.62      2000\nweighted avg       0.65      0.62      0.62      2000\n"
+  },
+  "gold_label_distribution": {
+    "SUPPORTED": 680,
+    "CONTRADICTED": 669,
+    "UNKNOWN": 651
+  },
+  "prediction_distribution": {
+    "SUPPORTED": 477,
+    "CONTRADICTED": 816,
+    "UNKNOWN": 707
+  }
+}

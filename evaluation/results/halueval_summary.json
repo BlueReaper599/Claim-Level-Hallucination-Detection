@@ -1,0 +1,25 @@
+{
+  "dataset": "HaluEval QA",
+  "total_available_examples": 10000,
+  "examples_evaluated": 1000,
+  "answer_pairs_evaluated": 2000,
+  "model": "cross-encoder/nli-deberta-v3-base",
+  "device": "cuda",
+  "entailment_threshold": 0.5,
+  "decision_margin": 0.1,
+  "accuracy": 0.4655,
+  "precision": 0.4258064516129032,
+  "recall": 0.198,
+  "f1": 0.27030716723549486,
+  "roc_auc": 0.5119469999999999,
+  "confusion_matrix": [
+    [
+      733,
+      267
+    ],
+    [
+      802,
+      198
+    ]
+  ]
+}
