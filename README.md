@@ -587,7 +587,3 @@ Potential extensions include:
   https://www.gradio.app/
 
 ---
-
-## 19. License
-
-Add the project license before publishing the repository.
